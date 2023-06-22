@@ -34,3 +34,16 @@ function getCoordinates(city) {
         console.log('Error:', error);
       });
     }
+
+    function getWeatherData(latitude, longitude) {
+        const weatherApiUrl = `https://api.openweathermap.org/data/2.5/';
+        fetch(weatherApiUrl)
+        .then(response => response.json())
+        .then(data => {
+            updateCurrentWeather(data);
+            updateForecastInfo(data);
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+    }
