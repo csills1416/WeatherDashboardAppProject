@@ -36,17 +36,18 @@ function getCoordinates(city) {
     }
 
     function getWeatherData(latitude, longitude) {
-        const weatherApiUrl = `https://api.openweathermap.org/data/2.5/';
+        const weatherApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+      // Couldn't seem to find a way to get the weather data from the API provided. So I looked up this api on the openweathermap.org website.
         fetch(weatherApiUrl)
-        .then(response => response.json())
-        .then(data => {
+          .then(response => response.json())
+          .then(data => {
             updateCurrentWeather(data);
-            updateForecastInfo(data);
-        })
-        .catch(error => {
+            updateForecast(data);
+          })
+          .catch(error => {
             console.log('Error:', error);
-        });
-    }
+          });
+      }
 
     function updateCurrentWeather(weatherData) {
     }
