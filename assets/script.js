@@ -106,8 +106,21 @@ function saveToSearchHistory(city) {
 }
 
 function displaySearchHistory() {
-
-}
-
+    let searchHistory = JSON.parse(localStorage.getItem('searchHistory'));
+    if (searchHistory !== null) {
+      const searchHistoryList = document.getElementById('search-history');
+      searchHistoryList.innerHTML = '';
+  
+      searchHistory.forEach(city => {
+        const searchItem = document.createElement('li');
+        searchItem.textContent = city;
+        searchItem.addEventListener('click', function() {
+          getCoordinates(city);
+        });
+  
+        searchHistoryList.appendChild(searchItem);
+      });
+    }
+  }
 
 displaySearchHistory();
