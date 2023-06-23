@@ -47,3 +47,25 @@ function getCoordinates(city) {
             console.log('Error:', error);
         });
     }
+
+    function updateCurrentWeather(weatherData) {
+    }
+
+    function updateForecastInfo(weatherData) {
+    }
+
+    function saveToSearchHistory(city) {
+    }
+
+    function displaySearchHistory() {
+        const searchHistory = JSON.parse(localStorage.getItem('searchHistory'));
+        if (searchHistory === null) {
+            searchHistory = [];
+        } else {
+            searchHistory = JSON.parse(localStorage.getItem('searchHistory'));
+        }
+        searchHistory.push(city);
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    }
+    
+    displaySearchHistory();
