@@ -14,7 +14,7 @@ cityForm.addEventListener('submit', function(event) {
 });
 
 function getCoordinates(city) {
-    const geocodingApiKey = ''; 
+    const geocodingApiKey = 'api.openweathermap.org/data/2.5/forecast?q={city name},{state code},{country code}&appid={API key}'; 
     const geocodingUrl = `https://api.geocoding-service.com/geocode?address=${encodeURIComponent(city)}&key=${geocodingApiKey}`;
   
     // Make a request to the geocoding service API to obtain the coordinates for the city
