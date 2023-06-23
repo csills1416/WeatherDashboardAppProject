@@ -90,8 +90,9 @@ function updateForecastInfo(weatherData) {
       </div>
     `;
   });
-
   forecastInfo.innerHTML = forecastHTML;
+
+  displaySearchHistory();
 }
 
 function saveToSearchHistory(city) {
