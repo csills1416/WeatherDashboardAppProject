@@ -1,4 +1,5 @@
-const apiKey = '11af795699dc87d9506f101730b7ae93EY'; // Replace with your actual OpenWeatherMap API key
+const apiKey = '11af795699dc87d9506f101730b7ae93'; // Replace with your actual OpenWeatherMap API key
+const geocodingApiKey = '11af795699dc87d9506f101730b7ae93'; // Replace with your actual geocoding API key
 const cityForm = document.getElementById('city');
 const cityInput = document.getElementById('city-input');
 const currentWeather = document.getElementById('current-weather');
@@ -14,8 +15,7 @@ cityForm.addEventListener('submit', function(event) {
 });
 
 function getCoordinates(city) {
-  const geocodingApiKey = '11af795699dc87d9506f101730b7ae93'; // Replace with your actual geocoding API key
-  const geocodingUrl = `https://api.geocoding-service.com/geocode?address=${encodeURIComponent(city)}&key=${11af795699dc87d9506f101730b7ae93}`;
+  const geocodingUrl = `https://api.geocoding-service.com/geocode?address=${encodeURIComponent(city)}&key=${geocodingApiKey}`;
 
   // Make a request to the geocoding service API to obtain the coordinates for the city
   fetch(geocodingUrl)
@@ -36,7 +36,7 @@ function getCoordinates(city) {
 }
 
 function getWeatherData(latitude, longitude) {
-  const weatherApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${11af795699dc87d9506f101730b7ae93}`;
+  const weatherApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
 
   fetch(weatherApiUrl)
     .then(response => response.json())
@@ -50,11 +50,48 @@ function getWeatherData(latitude, longitude) {
 }
 
 function updateCurrentWeather(weatherData) {
+  const currentWeatherInfo = weatherData.list[0];
+  const cityName = currentWeatherInfo.name;
+  const date = new Date(currentWeatherInfo.dt * 1000).toLocaleDateString();
+  const iconCode = currentWeatherInfo.weather[0].icon;
+  const temperature = Math.round(currentWeatherInfo.main.temp);
+  const humidity = currentWeatherInfo.main.humidity;
+  const windSpeed = currentWeatherInfo.wind.speed;
 
+  const currentWeatherHTML = `
+    <h3>${cityName} (${date})</h3>
+    <img src="http://openweathermap.org/img/w/${iconCode}.png" alt="Weather Icon">
+    <p>Temperature: ${temperature}°C</p>
+    <p>Humidity: ${humidity}%</p>
+    <p>Wind Speed: ${windSpeed} m/s</p>
+  `;
+
+  currentWeather.innerHTML = currentWeatherHTML;
 }
 
 function updateForecastInfo(weatherData) {
+  const forecastItems = weatherData.list.slice(1, 6); // Extract the next 5 forecast items
 
+  let forecastHTML = '';
+  forecastItems.forEach(item => {
+    const date = new Date(item.dt * 1000).toLocaleDateString();
+    const iconCode = item.weather[0].icon;
+    const temperature = Math.round(item.main.temp);
+    const humidity = item.main.humidity;
+    const windSpeed = item.wind.speed;
+
+    forecastHTML += `
+      <div class="forecast-item">
+        <p>${date}</p>
+        <img src="http://openweathermap.org/img/w/${iconCode}.png" alt="Weather Icon">
+        <p>Temperature: ${temperature}°C</p>
+        <p>Humidity: ${humidity}%</p>
+        <p>Wind Speed: ${windSpeed} m/s</p>
+      </div>
+    `;
+  });
+
+  forecastInfo.innerHTML = forecastHTML;
 }
 
 function saveToSearchHistory(city) {
@@ -64,8 +101,13 @@ function saveToSearchHistory(city) {
   }
   searchHistory.push(city);
   localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+
+  displaySearchHistory();
 }
 
 function displaySearchHistory() {
- 
+
 }
+
+
+displaySearchHistory();
