@@ -14,12 +14,12 @@ cityForm.addEventListener('submit', function(event) {
 });
 
 function getWeatherData(city) {
-  const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+  const weatherApiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
 
   fetch(weatherApiUrl)
     .then(response => response.json())
     .then(data => {
-      updateCurrentWeather(data)
+      updateCurrentWeather(data);
       updateForecastInfo(data);
     })
     .catch(error => {
@@ -28,12 +28,12 @@ function getWeatherData(city) {
 }
 
 function updateCurrentWeather(weatherData) {
-  const cityName = weatherData.name;
-  const date = new Date(weatherData.dt * 1000).toLocaleDateString();
-  const iconCode = weatherData.weather[0].icon;
-  const temperature = Math.round(weatherData.main.temp);
-  const humidity = weatherData.main.humidity;
-  const windSpeed = weatherData.wind.speed;
+  const cityName = weatherData.city.name;
+  const date = new Date(weatherData.list[0].dt * 1000).toLocaleDateString();
+  const iconCode = weatherData.list[0].weather[0].icon;
+  const temperature = Math.round(weatherData.list[0].main.temp);
+  const humidity = weatherData.list[0].main.humidity;
+  const windSpeed = weatherData.list[0].wind.speed;
 
   const currentWeatherHTML = `
     <h3>${cityName} (${date})</h3>
@@ -46,8 +46,8 @@ function updateCurrentWeather(weatherData) {
   currentWeather.innerHTML = currentWeatherHTML;
 }
 
-function updateForecastInfo(weatherdata) {
-  const forecastItems = weatherdata.list.slice(1, 6);
+function updateForecastInfo(weatherData) {
+  const forecastItems = weatherData.list.slice(1, 6);
 
   let forecastHTML = '';
   forecastItems.forEach(item => {
@@ -67,5 +67,6 @@ function updateForecastInfo(weatherdata) {
       </div>
     `;
   });
+
   forecastInfo.innerHTML = forecastHTML;
 }
