@@ -19,7 +19,8 @@ function getWeatherData(city) {
   fetch(weatherApiUrl)
     .then(response => response.json())
     .then(data => {
-      updateCurrentWeather(data);
+      updateCurrentWeather(data)
+      updateForecastInfo(data);
     })
     .catch(error => {
       console.log('Error:', error);
@@ -43,4 +44,28 @@ function updateCurrentWeather(weatherData) {
   `;
 
   currentWeather.innerHTML = currentWeatherHTML;
+}
+
+function updateForecastInfo(weatherdata) {
+  const forecastItems = weatherdata.list.slice(1, 6);
+
+  let forecastHTML = '';
+  forecastItems.forEach(item => {
+    const date = new Date(item.dt * 1000).toLocaleDateString();
+    const iconCode = item.weather[0].icon;
+    const temperature = Math.round(item.main.temp);
+    const humidity = item.main.humidity;
+    const windSpeed = item.wind.speed;
+
+    forecastHTML += `
+      <div class="forecast-item">
+        <p>${date}</p>
+        <img src="http://openweathermap.org/img/w/${iconCode}.png" alt="Weather Icon">
+        <p>Temperature: ${temperature}°C</p>
+        <p>Humidity: ${humidity}%</p>
+        <p>Wind Speed: ${windSpeed} m/s</p>
+      </div>
+    `;
+  });
+  forecastInfo.innerHTML = forecastHTML;
 }
