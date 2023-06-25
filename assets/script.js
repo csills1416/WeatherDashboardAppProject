@@ -1,8 +1,9 @@
-const apiKey = '9256e0ebb626bdb6023cfcded73f029f'; // Replace with your actual OpenWeatherMap API key
+const apiKey = '9256e0ebb626bdb6023cfcded73f029f';
 const cityForm = document.getElementById('city');
 const cityInput = document.getElementById('city-input');
 const currentWeather = document.getElementById('current-weather');
 const forecastInfo = document.getElementById('forecast-info');
+const searchHistoryList = document.getElementById('search-history');
 
 cityForm.addEventListener('submit', function(event) {
   event.preventDefault();
@@ -21,6 +22,7 @@ function getWeatherData(city) {
     .then(data => {
       updateCurrentWeather(data);
       updateForecastInfo(data);
+      saveToSearchHistory(city);
     })
     .catch(error => {
       console.log('Error:', error);
@@ -70,3 +72,27 @@ function updateForecastInfo(weatherData) {
 
   forecastInfo.innerHTML = forecastHTML;
 }
+
+function saveToSearchHistory(city) {
+  let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+  searchHistory.push(city);
+  localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+  displaySearchHistory();
+}
+
+function displaySearchHistory() {
+  let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+  searchHistoryList.innerHTML = '';
+
+  searchHistory.forEach(city => {
+    const searchItem = document.createElement('li');
+    searchItem.textContent = city;
+    searchItem.addEventListener('click', function() {
+      getWeatherData(city);
+    });
+
+    searchHistoryList.appendChild(searchItem);
+  });
+}
+
+displaySearchHistory();
