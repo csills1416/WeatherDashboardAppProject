@@ -49,7 +49,7 @@ function updateCurrentWeather(weatherData) {
 }
 
 function updateForecastInfo(weatherData) {
-  const forecastItems = weatherData.list.slice(1, 6);
+  const forecastItems = weatherData.list.filter ((item,index) => index % 8 === 0). slice(0, 5);
 
   let forecastHTML = '';
   forecastItems.forEach(item => {
