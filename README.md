@@ -1,5 +1,8 @@
 # Weather Dashboard
 
+![weatherdashboard screenshot](https://github.com/csills1416/weatherforecastapp/assets/71670415/e6062f01-3238-4e2f-a9d3-c9f5f6dfaef2)
+
+
 The Weather Dashboard is a web application that provides users with real-time weather information for any desired city. With this app, users can retrieve current weather conditions and view a 5-day weather forecast, helping them plan their activities accordingly.
 
 ## Features
