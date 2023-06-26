@@ -75,9 +75,11 @@ function updateForecastInfo(weatherData) {
 
 function saveToSearchHistory(city) {
   let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
-  searchHistory.push(city);
-  localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-  displaySearchHistory();
+  if (!searchHistory.includes(city)) {
+    searchHistory.push(city);
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    displaySearchHistory();
+  }
 }
 
 function displaySearchHistory() {
