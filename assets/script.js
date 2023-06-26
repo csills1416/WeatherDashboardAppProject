@@ -1,9 +1,10 @@
-const apiKey = '9256e0ebb626bdb6023cfcded73f029f';
+const apiKey = '9256e0ebb626bdb6023cfcded73f029f'; // Replace with your actual OpenWeatherMap API key
 const cityForm = document.getElementById('city');
 const cityInput = document.getElementById('city-input');
 const currentWeather = document.getElementById('current-weather');
 const forecastInfo = document.getElementById('forecast-info');
 const searchHistoryList = document.getElementById('search-history');
+const clearHistoryBtn = document.getElementById('clear-history-btn');
 
 cityForm.addEventListener('submit', function(event) {
   event.preventDefault();
@@ -49,7 +50,7 @@ function updateCurrentWeather(weatherData) {
 }
 
 function updateForecastInfo(weatherData) {
-  const forecastItems = weatherData.list.filter ((item,index) => index % 8 === 0). slice(0, 5);
+  const forecastItems = weatherData.list.filter((item, index) => index % 8 === 0).slice(0, 5);
 
   let forecastHTML = '';
   forecastItems.forEach(item => {
@@ -95,6 +96,18 @@ function displaySearchHistory() {
 
     searchHistoryList.appendChild(searchItem);
   });
+
+  // Add Clear History button
+  const clearHistoryItem = document.createElement('li');
+  clearHistoryItem.appendChild(clearHistoryBtn);
+  searchHistoryList.appendChild(clearHistoryItem);
 }
+
+function clearSearchHistory() {
+  localStorage.removeItem('searchHistory');
+  displaySearchHistory();
+}
+
+clearHistoryBtn.addEventListener('click', clearSearchHistory);
 
 displaySearchHistory();
